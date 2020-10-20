@@ -9,17 +9,19 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage]= useState(1);
+  // const [isSearch, setIsSearch] = useState(false)
 
   const handleSearch = async(e) => {
-    console.log('1234');
     const SEARCH_URL = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${search}`;
     e.preventDefault();
     if(!search) return
     const response = await fetch(SEARCH_URL)
     const {results} = await response.json();
-    setLoading(false)
+    setSearch('')
     setMovies(results)
-    }
+  }
+
+
   const fetchNext = async() => {
     setPage(page => page + 1)
     const FEATURED_MOVIES =
@@ -53,7 +55,7 @@ function App() {
 			<header>
         <h1>MovieMania</h1>
         <form onSubmit={handleSearch}>
-				<input type='search' placeholder="search movies" className='search' onChange={(e) => setSearch(e.target.value) } />
+				<input type='search' placeholder="search movies" className='search' value={search} onChange={(e) => setSearch(e.target.value) } />
         </form>
 			</header>
 		<div className='movies-container'>

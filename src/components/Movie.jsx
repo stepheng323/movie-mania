@@ -11,7 +11,7 @@ const Movie = ({ title, average, posterPath, overview }) => {
 					<h3>{title}</h3>
 					<span
 						className={`tag ${
-							average > 8
+							average >= 8
 								? 'tag_green'
 								: average >= 6
 								? 'tag_orange'
