@@ -6,17 +6,18 @@ const api_key = 'd4b80c6aaf1234caa0b98179bc92eae7'
 
 function App() {
 	const [movies, setMovies] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage]= useState(1);
 
   const handleSearch = async(e) => {
+    console.log('1234');
     const SEARCH_URL = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${search}`;
-
     e.preventDefault();
     if(!search) return
     const response = await fetch(SEARCH_URL)
     const {results} = await response.json();
+    setLoading(false)
     setMovies(results)
     }
   const fetchNext = async() => {
@@ -29,7 +30,7 @@ function App() {
         const response = await fetch(FEATURED_MOVIES);
         const { results } = await response.json();
         setLoading(false);
-        setMovies(movies.concat(results));
+        setMovies([...new Set([...movies, ...results])]);
       };
       getMovies();
   }
@@ -63,7 +64,7 @@ function App() {
       loader={<p>Loading...</p>}
       
       >
-			{movies.length ? movies.map((movie) => {
+			{!isLoading ? movies.map((movie) => {
 				const { id, title, poster_path, vote_average, overview } = movie;
 				return (
 					<Movie
